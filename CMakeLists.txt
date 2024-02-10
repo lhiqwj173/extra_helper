@@ -12,4 +12,4 @@ endif()
 project ("extra_helper")
 
 # 包含子项目。
-add_subdirectory ("extra_helper")
+add_subdirectory ("extra_helper_lib")
