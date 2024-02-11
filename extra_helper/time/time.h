@@ -10,7 +10,7 @@
 #ifndef _MY_LIB_ 
 #define _MY_LIB_ 
 
-#ifdef LINUX 
+#ifdef __unix__ || __unix 
 #define MYLIB_API       extern 
 #else 
 #define MYLIB_API   __declspec(dllexport) 

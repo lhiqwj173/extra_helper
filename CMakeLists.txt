@@ -11,12 +11,12 @@ endif()
 
 project ("cpp_extra_helper")
 
-# 自定义宏，代码中可以使用  
-if (CMAKE_HOST_UNIX) 
-    ADD_DEFINITIONS(-DLINUX) 
-else () 
-    ADD_DEFINITIONS(-DWINDOWS) 
-endif() 
+## 自定义宏，代码中可以使用  
+#if (CMAKE_HOST_UNIX) 
+#    ADD_DEFINITIONS(-DLINUX) 
+#else () 
+#    ADD_DEFINITIONS(-DWINDOWS) 
+#endif() 
 
 # 包含子项目。
 add_subdirectory ("extra_helper")
