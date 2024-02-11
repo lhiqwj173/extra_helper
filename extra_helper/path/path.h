@@ -1,6 +1,9 @@
 #pragma once
+#include "../defi.h"
+
 #include <filesystem>
 #include <algorithm>
+#include <string>
 
 namespace extra {
 	namespace path {
