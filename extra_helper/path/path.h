@@ -4,12 +4,7 @@
 
 namespace extra {
 	namespace path {
-		MYLIB_API void check_create_folder(const std::string& folder) {
-			// 检查文件夹是否存在
-			if (!std::filesystem::exists(folder)) {
-				std::filesystem::create_directories(folder);
-			}
-		}
+		MYLIB_API void check_create_folder(const std::string& folder);
 
 		// 获取文件夹下的所有文件
 		// 不会清空files
