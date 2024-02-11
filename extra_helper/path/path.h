@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 
+
 namespace extra {
 	namespace path {
 		MYLIB_API void check_create_folder(const std::string& folder);
