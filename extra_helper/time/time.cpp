@@ -26,7 +26,7 @@ std::string extra::time::strftime(const timestamp_ms timestamp, const std::strin
 
 		// 替换毫秒
 		std::string ms_str = std::to_string(milliseconds);
-		int zero_need_fill = 3 - ms_str.size();
+		size_t zero_need_fill = 3 - ms_str.size();
 		if (zero_need_fill > 0) ms_str.insert(0, zero_need_fill, '0');
 
 		output.replace(ms_pos_out, 2, ms_str);
@@ -41,19 +41,14 @@ std::string extra::time::strftime(const time_t timestamp, const std::string& for
 	assert(timestamp < 10000000000);
 
 	// 将秒时间戳转换为时间结构体
-	std::tm* tm_ptr = std::localtime(&timestamp);
-	if (tm_ptr == nullptr) {
-		// 获取错误代码
-		int err = errno;
-		// 输出错误信息
-		std::cerr << "Error: " << err << std::endl;
-	}
+	std::tm _m;
+	localtime_s(&_m , &timestamp);
 
 	// 创建stringstream对象
 	std::stringstream ss;
 
 	// 使用strftime函数格式化时间
-	ss << std::put_time(tm_ptr, format.c_str());
+	ss << std::put_time(&_m, format.c_str());
 
 	return ss.str();
 }
