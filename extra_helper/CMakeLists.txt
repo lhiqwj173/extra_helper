@@ -1,7 +1,7 @@
 ﻿
 # 设置 库文件的默认输出路径
 set (LIBRARY_OUTPUT_PATH lib)
-set(HEADERS "time/time.h" "file/file.h" )
+set(HEADERS "time/time.h" "path/path.h" )
 
 add_library(extra_helper SHARED  "time/time.cpp" ${HEADERS})
 
