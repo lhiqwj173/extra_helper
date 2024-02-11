@@ -41,14 +41,19 @@ std::string extra::time::strftime(const time_t timestamp, const std::string& for
 	assert(timestamp < 10000000000);
 
 	// 将秒时间戳转换为时间结构体
-	std::tm _m;
-	localtime_s(&_m , &timestamp);
+	std::tm* tm_ptr = std::localtime(&timestamp);
+	if (tm_ptr == nullptr) {
+		// 获取错误代码
+		int err = errno;
+		// 输出错误信息
+		std::cerr << "Error: " << err << std::endl;
+	}
 
 	// 创建stringstream对象
 	std::stringstream ss;
 
 	// 使用strftime函数格式化时间
-	ss << std::put_time(&_m, format.c_str());
+	ss << std::put_time(tm_ptr, format.c_str());
 
 	return ss.str();
 }
