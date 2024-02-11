@@ -3,7 +3,7 @@
 set (LIBRARY_OUTPUT_PATH lib)
 set(HEADERS "time/time.h" "file/file.h" )
 
-add_library(extra_helper SHARED "time/time.cpp" ${HEADERS})
+add_library(extra_helper SHARED  "time/time.cpp" ${HEADERS})
 
 file(INSTALL ${HEADERS} DESTINATION include/extra_helper)
 

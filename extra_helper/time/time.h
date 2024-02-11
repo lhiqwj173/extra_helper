@@ -18,6 +18,8 @@
 #define MYLIB_API   __declspec(dllexport) 
 #endif 
 
+#endif  // _MY_LIB_ 
+
 namespace extra {
 	namespace time {
 
@@ -36,4 +38,3 @@ namespace extra {
 }
 
 
-#endif  // _MY_LIB_ 
