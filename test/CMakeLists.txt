@@ -1,13 +1,12 @@
-﻿include_directories(include)
-
-ADD_DEFINITIONS(-DIMPORT) 
+﻿#include_directories(include)
+#include_directories("../extra_helper/include")
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/../extra_helper/include)
 
 project ("test")
 
 add_executable(test_extra_time test_extra_time.cpp)
-#target_link_libraries(test_extra_time ${EXTRA_HELPER_LIB})
-target_link_libraries(test_extra_time extra_helper)
+target_link_libraries(test_extra_time ${EH_LIBRARIES})
 
 add_executable(test_extra_path test_extra_path.cpp)
-#target_link_libraries(test_extra_path ${EXTRA_HELPER_LIB})
-target_link_libraries(test_extra_path extra_helper)
+target_link_libraries(test_extra_path ${EH_LIBRARIES})
+

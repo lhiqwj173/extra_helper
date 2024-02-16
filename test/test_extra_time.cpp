@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../extra_helper/time/time.h"
+#include "extra_helper/time/time.h"
 
 using namespace std;
 int main() {
