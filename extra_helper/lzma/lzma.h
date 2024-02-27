@@ -10,6 +10,6 @@ namespace extra {
 
 		// 压缩文件
 		// 返回压缩后的文件路径
-		MYLIB_API bool compress(const std::string& file_path, const int level=-1);
+		MYLIB_API bool compress(const std::string& file_path, const int level=5);
 	}
 }

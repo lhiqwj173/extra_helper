@@ -2,18 +2,20 @@
 #include <vector>
 #include "extra_helper/lzma/lzma.h"
 #include <ctime>
+#include <io.h>
+
 
 int main(int argc, char** argv) {
-	if (argc < 3) {
-		std::cout << "Usage: " << argv[0] << "<type: 0Ñ¹Ëõ / 1½âÑ¹> <file>" << std::endl;
-		return 1;
-	}
+	//if (argc < 3) {
+	//	std::cout << "Usage: " << argv[0] << "<type: 0Ñ¹Ëõ / 1½âÑ¹> <file>" << std::endl;
+	//	return 1;
+	//}
 
-	int type = std::stoi(argv[1]);
-	std::string file = argv[2];
+	//int type = std::stoi(argv[1]);
+	//std::string file = argv[2];
 
-	//int type = 1;
-	//std::string file = R"(C:\Users\lh\Desktop\temp\depth_1708942514987)";
+	int type = 1;
+	std::string file = R"(C:\Users\lh\Desktop\temp\depth_1708942514987)";
 
 	auto t = time(0);
 	if (type == 0) {
