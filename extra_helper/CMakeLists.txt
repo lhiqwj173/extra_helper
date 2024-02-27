@@ -1,11 +1,16 @@
 ﻿
 ADD_DEFINITIONS(-DEXPORT) 
 
+add_subdirectory ("lzma")
+
 # 设置 库文件的默认输出路径
-set(HEADERS "defi.h" "time/time.h" "path/path.h" )
+set(HEADERS "defi.h" "time/time.h" "path/path.h" "lzma/lzma.h" )
 
 # 编译动态库 
-add_library(extra_helper SHARED "path/path.cpp" "time/time.cpp" )
+add_library(extra_helper SHARED "path/path.cpp" "time/time.cpp"  "lzma/lzma.cpp")
+
+# 链接lzma lib
+target_link_libraries(extra_helper "lzma")
 
 # 定义自定义命令
 add_custom_command(TARGET extra_helper POST_BUILD
@@ -16,7 +21,7 @@ add_custom_command(TARGET extra_helper POST_BUILD
 file(INSTALL "defi.h" DESTINATION include/extra_helper)
 file(INSTALL "time/time.h" DESTINATION include/extra_helper/time)
 file(INSTALL "path/path.h" DESTINATION include/extra_helper/path)
+file(INSTALL "lzma/lzma.h" DESTINATION include/extra_helper/lzma)
 
 set(EH_LIBRARIES extra_helper CACHE INTERNAL "link extra_helper libraries")
-#set(EXTRA_HELPER_LIB extra_helper CACHE INTERNAL "link extra_helper libraries")
 
