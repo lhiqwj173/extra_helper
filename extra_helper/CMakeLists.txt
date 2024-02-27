@@ -1,6 +1,11 @@
 ﻿
 ADD_DEFINITIONS(-DEXPORT) 
 
+# 如果非win，添加 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+if (CMAKE_HOST_UNIX) 
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+endif()
+
 add_subdirectory ("lzma")
 
 # 设置 库文件的默认输出路径
