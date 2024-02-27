@@ -1,5 +1,5 @@
 #include <memory>
-#include <string>
+#include <cstring>
 
 #include "lzma.h"
 #include "LzmaEnc.h"
