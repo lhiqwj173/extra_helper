@@ -1,11 +1,23 @@
-﻿
+﻿project ("extra_helper")
+
+set(CMAKE_CXX_STANDARD 17)
+
 ADD_DEFINITIONS(-DEXPORT) 
 
-# 设置 库文件的默认输出路径
-set(HEADERS "defi.h" "time/time.h" "path/path.h" "lzma/lzma.h" "file/file.h" "sys/sys.h" )
+# lzma
+add_definitions(-D_7ZIP_ST)
+
+# lzma sdk源文件
+set(LZMA_SOURCES
+    lzma/lzma.cpp
+    lzma/7z/C/LzFind.c
+    lzma/7z/C/LzmaDec.c
+    lzma/7z/C/LzmaEnc.c
+    lzma/7z/C/CpuArch.c
+)
 
 # 编译动态库 
-add_library(extra_helper SHARED "path/path.cpp" "time/time.cpp"  "lzma/lzma.cpp" "file/file.h" "file/file.cpp" "sys/sys.h" "sys/sys.cpp")
+add_library(extra_helper SHARED "path/path.cpp" "time/time.cpp"  ${LZMA_SOURCES}  "file/file.cpp" "sys/sys.cpp")
 
 # 定义自定义命令
 add_custom_command(TARGET extra_helper POST_BUILD
