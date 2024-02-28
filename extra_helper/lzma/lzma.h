@@ -1,6 +1,7 @@
 #pragma once
 #include "../defi.h"
 #include <string>
+#include <memory>
 
 namespace extra {
 	namespace lzma {
