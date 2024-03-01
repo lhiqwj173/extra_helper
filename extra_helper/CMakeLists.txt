@@ -25,6 +25,13 @@ add_custom_command(TARGET extra_helper POST_BUILD
     COMMENT "Copying extra_helper to test"
 )
 
+if (NOT WIN32)
+add_custom_command(TARGET extra_helper POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:extra_helper> /usr/lib
+    COMMENT "Copying extra_helper to /usr/lib"
+)
+endif()
+
 file(INSTALL "defi.h" DESTINATION include/extra_helper)
 file(INSTALL "time/time.h" DESTINATION include/extra_helper/time)
 file(INSTALL "path/path.h" DESTINATION include/extra_helper/path)

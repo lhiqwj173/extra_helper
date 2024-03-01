@@ -1,24 +1,24 @@
-#pragma once
+ï»¿#pragma once
 #include "../defi.h"
 #include <string>
 #include <memory>
 
 namespace extra {
 	namespace lzma {
-		// ½âÑ¹ËõÎÄ¼ş
+		// è§£å‹ç¼©æ–‡ä»¶
 		MYLIB_API bool decompress(const std::string& file_path);
 
-		// Ñ¹ËõÎÄ¼ş
+		// å‹ç¼©æ–‡ä»¶
 		MYLIB_API bool compress(const std::string& file_path, const int level=5);
 
-		// ½âÑ¹ËõÄÚ´æÊı¾İ
+		// è§£å‹ç¼©å†…å­˜æ•°æ®
 		MYLIB_API std::unique_ptr<uint8_t[]> decompress_mem(const std::string& data, uint32_t& outputSize);
 
-		// ½âÑ¹ËõÄÚ´æÊı¾İ
+		// è§£å‹ç¼©å†…å­˜æ•°æ®
 		MYLIB_API  std::unique_ptr<uint8_t[]> decompress_mem(const char* data, const uint32_t length, uint32_t& outputSize);
 		MYLIB_API  std::unique_ptr<uint8_t[]> decompress_mem(const uint8_t* data, const uint32_t length, uint32_t& outputSize);
 
-		// Ñ¹ËõÄÚ´æÊı¾İ
+		// å‹ç¼©å†…å­˜æ•°æ®
 		MYLIB_API std::unique_ptr<uint8_t[]> compress_mem(const std::string& data, uint32_t& outputSize, const int level = 5);
 	}
 }

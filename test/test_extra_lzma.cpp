@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <vector>
 #include "extra_helper/lzma/lzma.h"
 #include <ctime>
@@ -6,16 +6,16 @@
 int main(int argc, char** argv) {
 	auto t = time(0);
 
-	// Ô­Ê¼Êı¾İ
+	// åŸå§‹æ•°æ®
 	std::string data = "here's something that should compress pretty well: abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef";
-	std::cout << "Ô­Ê¼Êı¾İ³¤¶È: " << data.size() << std::endl;
+	std::cout << "åŸå§‹æ•°æ®é•¿åº¦: " << data.size() << std::endl;
 
 	uint32_t outputSize;
 	auto compressed_data = extra::lzma::compress_mem(data, outputSize, 9);
-	std::cout << "Ñ¹ËõºóÊı¾İ³¤¶È: " << outputSize << std::endl;
+	std::cout << "å‹ç¼©åæ•°æ®é•¿åº¦: " << outputSize << std::endl;
 	
 	auto decompressed_data = extra::lzma::decompress_mem(compressed_data.get(), outputSize, outputSize);
-	std::cout << "½âÑ¹ºóÊı¾İ³¤¶È: " << outputSize << std::endl;
+	std::cout << "è§£å‹åæ•°æ®é•¿åº¦: " << outputSize << std::endl;
 
-	std::cout << "ºÄÊ±: " << time(0) - t << "s" << std::endl;
+	std::cout << "è€—æ—¶: " << time(0) - t << "s" << std::endl;
 }
