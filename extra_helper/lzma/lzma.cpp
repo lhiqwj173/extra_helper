@@ -225,6 +225,17 @@ void extra::lzma::decompress_mem_thread(const uint8_t* data, const uint32_t leng
 		cb(std::move(result), outputSize);
 	}).detach();
 }
+
+void extra::lzma::compress_mem_thread(std::string&& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
+	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(std::move(data));
+	int length = data.size();
+	std::thread([&dataPtr, length, level, cb]() {
+		uint32_t outputSize;
+		auto result = extra::lzma::compress_mem((char*)dataPtr.get(), outputSize, level);
+		cb(std::move(result), outputSize);
+	}).detach();
+}
+
 void extra::lzma::compress_mem_thread(const std::string& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(data);
 	int length = data.size();

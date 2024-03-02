@@ -29,6 +29,7 @@ namespace extra {
 		MYLIB_API void decompress_mem_thread(const std::string& data, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
 		MYLIB_API void decompress_mem_thread(const char* data, const uint32_t length, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
 		MYLIB_API void decompress_mem_thread(const uint8_t* data, const uint32_t length, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
+		MYLIB_API void compress_mem_thread(std::string&& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
 		MYLIB_API void compress_mem_thread(const std::string& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
 		MYLIB_API void compress_mem_thread(const char* data, const uint32_t length, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
 	}
