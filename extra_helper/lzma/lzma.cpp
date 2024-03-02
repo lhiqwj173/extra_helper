@@ -1,4 +1,4 @@
-#include <memory>
+ï»¿#include <memory>
 #include <cstring>
 
 #include "lzma.h"
@@ -8,9 +8,10 @@
 
 #include "7z/C/LzmaEnc.h"
 #include "7z/C/LzmaDec.h"
+#include <thread>
 
 //////////////////////////////
-// µ÷ÓÃ7z½âÑ¹ËõÎÄ¼ş
+// è°ƒç”¨7zè§£å‹ç¼©æ–‡ä»¶
 //////////////////////////////
 // win
 #ifdef _WIN32
@@ -19,19 +20,19 @@ const char * fiel7z = "C:/Windows/7z.exe";
 const char * fiel7z = "/usr/bin/7z";
 #endif // DEBUG
 
-// ½âÑ¹ËõÎÄ¼ş
-// ·µ»Ø³É¹¦Óë·ñ
+// è§£å‹ç¼©æ–‡ä»¶
+// è¿”å›æˆåŠŸä¸å¦
 bool _decompress(const std::string& file_path, const int level, bool compress = true) {
-	// Êä³öÎÄ¼ş
+	// è¾“å‡ºæ–‡ä»¶
 	std::string out_file_path = file_path + ".temp";
 
-	// ÁÙÊ±ÎÄ¼ş¼Ğ
+	// ä¸´æ—¶æ–‡ä»¶å¤¹
 	std::string temp_folder;
 
-	// Ö´ĞĞÃüÁîĞĞ
+	// æ‰§è¡Œå‘½ä»¤è¡Œ
 	std::string cmd = fiel7z;
 	std::string r;
-	// µ÷ÓÃÃüÁîĞĞÖ´ĞĞÑ¹ËõÖ¸Áî
+	// è°ƒç”¨å‘½ä»¤è¡Œæ‰§è¡Œå‹ç¼©æŒ‡ä»¤
 	if (compress) {
 		cmd += " a -mx" + std::to_string(level) + " " + out_file_path + " " + file_path;
 	}
@@ -45,29 +46,29 @@ bool _decompress(const std::string& file_path, const int level, bool compress = 
 		out_file_path = temp_folder + filename;
 	}
 
-	// Ö´ĞĞÃüÁîĞĞ
+	// æ‰§è¡Œå‘½ä»¤è¡Œ
 	system(cmd.c_str());
 
-	// Ìæ»»Ô­ÎÄ¼ş
+	// æ›¿æ¢åŸæ–‡ä»¶
 	remove(file_path.c_str());
 	rename(out_file_path.c_str(), file_path.c_str());
 
 	return true;
 }
 
-// ½âÑ¹ËõÎÄ¼ş
+// è§£å‹ç¼©æ–‡ä»¶
 bool extra::lzma::decompress(const std::string& file_path) {
 	return _decompress(file_path, -1, false);
 }
 
-// Ñ¹ËõÎÄ¼ş
+// å‹ç¼©æ–‡ä»¶
 bool extra::lzma::compress(const std::string& file_path, const int level) {
 	return _decompress(file_path, level);
 }
 
 
 //////////////////////////////
-// lzma sdk ½âÑ¹Ëõ
+// lzma sdk è§£å‹ç¼©
 //////////////////////////////
 
 static void* _lzmaAlloc(ISzAllocPtr, size_t size) {
@@ -158,22 +159,67 @@ std::unique_ptr<uint8_t[]> lzmaDecompress(const uint8_t *input, uint32_t inputSi
 	return NULL;
 }
 
-// ½âÑ¹ËõÄÚ´æÊı¾İ
+// è§£å‹ç¼©å†…å­˜æ•°æ®
 std::unique_ptr<uint8_t[]> extra::lzma::decompress_mem(const std::string& data, uint32_t& outputSize) {
 	return lzmaDecompress((const uint8_t*)data.data(), data.size(), &outputSize);
 }
 
-// ½âÑ¹ËõÄÚ´æÊı¾İ
+// è§£å‹ç¼©å†…å­˜æ•°æ®
 std::unique_ptr<uint8_t[]> extra::lzma::decompress_mem(const char* data, const uint32_t length, uint32_t& outputSize) {
 	return lzmaDecompress((const uint8_t*)data, length, &outputSize);
 }
 
-// ½âÑ¹ËõÄÚ´æÊı¾İ
+// è§£å‹ç¼©å†…å­˜æ•°æ®
 std::unique_ptr<uint8_t[]> extra::lzma::decompress_mem(const uint8_t* data, const uint32_t length, uint32_t& outputSize) {
 	return lzmaDecompress(data, length, &outputSize);
 }
 
-// Ñ¹ËõÄÚ´æÊı¾İ
+// å‹ç¼©å†…å­˜æ•°æ®
 std::unique_ptr<uint8_t[]> extra::lzma::compress_mem(const std::string& data, uint32_t& outputSize, const int level){
 	return lzmaCompress((const uint8_t*)data.data(), data.size(), &outputSize, level);
+}
+
+// åœ¨å¦å¤–çš„çº¿ç¨‹ä¸­è§£å‹æ–‡ä»¶
+void extra::lzma::decompress_thread(const std::string& file_path, std::function<void(bool)> cb) {
+	std::thread([file_path, cb]() {
+		bool result = extra::lzma::decompress(file_path);
+		cb(result);
+	}).detach();
+}
+
+// åœ¨å¦å¤–çš„çº¿ç¨‹ä¸­å‹ç¼©æ–‡ä»¶
+void extra::lzma::compress_thread(const std::string& file_path, const int level, std::function<void(bool)> cb) {
+	std::thread([file_path, level, cb]() {
+		bool result = extra::lzma::compress(file_path, level);
+		cb(result);
+	}).detach();
+}
+
+void extra::lzma::decompress_mem_thread(const std::string& data, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
+	std::thread([data, cb]() {
+		uint32_t outputSize;
+		auto result = extra::lzma::decompress_mem(data, outputSize);
+		cb(std::move(result), outputSize);
+	}).detach();
+}
+void extra::lzma::decompress_mem_thread(const char* data, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
+	std::thread([data, cb]() {
+		uint32_t outputSize;
+		auto result = extra::lzma::decompress_mem(data, strlen(data), outputSize);
+		cb(std::move(result), outputSize);
+	}).detach();
+}
+void extra::lzma::decompress_mem_thread(const uint8_t* data, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
+	std::thread([data, cb]() {
+		uint32_t outputSize;
+		auto result = extra::lzma::decompress_mem(data, sizeof(data), outputSize);
+		cb(std::move(result), outputSize);
+	}).detach();
+}
+void extra::lzma::compress_mem_thread(const std::string& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
+	std::thread([data, level, cb]() {
+		uint32_t outputSize;
+		auto result = extra::lzma::compress_mem(data, outputSize, level);
+		cb(std::move(result), outputSize);
+	}).detach();
 }
