@@ -16,4 +16,4 @@ add_executable(test_extra_7z "test_extra_7z.cpp")
 target_link_libraries(test_extra_7z ${EH_LIBRARIES} pthread )
 
 add_executable(test_extra_lzma "test_extra_lzma.cpp")
-target_link_libraries(test_extra_lzma ${EH_LIBRARIES})
+target_link_libraries(test_extra_lzma ${EH_LIBRARIES} pthread)
