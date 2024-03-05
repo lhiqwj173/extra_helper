@@ -203,7 +203,7 @@ void extra::lzma::compress_thread(const std::string& file_path, const int level,
 void extra::lzma::decompress_mem_thread(const std::string& data, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(data);
 	int length = data.size();
-	std::thread([&dataPtr, length, cb]() {
+	std::thread([dataPtr, length, cb]() {
 		uint32_t outputSize;
 		auto result = extra::lzma::decompress_mem((char *)(dataPtr->data()), length, outputSize);
 		cb(std::move(result), outputSize);
@@ -211,7 +211,7 @@ void extra::lzma::decompress_mem_thread(const std::string& data, std::function<v
 }
 void extra::lzma::decompress_mem_thread(const char* data, const uint32_t length, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(data, length);
-	std::thread([&dataPtr, length, cb]() {
+	std::thread([dataPtr, length, cb]() {
 		uint32_t outputSize;
 		auto result = extra::lzma::decompress_mem((char*)(dataPtr->data()), length, outputSize);
 		cb(std::move(result), outputSize);
@@ -219,7 +219,7 @@ void extra::lzma::decompress_mem_thread(const char* data, const uint32_t length,
 }
 void extra::lzma::decompress_mem_thread(const uint8_t* data, const uint32_t length, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>((char *)data, length);
-	std::thread([&dataPtr, length, cb]() {
+	std::thread([dataPtr, length, cb]() {
 		uint32_t outputSize;
 		auto result = extra::lzma::decompress_mem((char*)(dataPtr->data()), length, outputSize);
 		cb(std::move(result), outputSize);
@@ -227,7 +227,7 @@ void extra::lzma::decompress_mem_thread(const uint8_t* data, const uint32_t leng
 }
 
 void extra::lzma::decompress_mem_thread(std::shared_ptr<char[]> data, const uint32_t length, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
-	std::thread([&data, length, cb]() {
+	std::thread([data, length, cb]() {
 		uint32_t outputSize;
 		auto result = extra::lzma::decompress_mem(data.get(), length, outputSize);
 		cb(std::move(result), outputSize);
@@ -237,7 +237,7 @@ void extra::lzma::decompress_mem_thread(std::shared_ptr<char[]> data, const uint
 void extra::lzma::compress_mem_thread(std::string&& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(std::move(data));
 	int length = dataPtr->size();
-	std::thread([&dataPtr, length, level, cb]() {
+	std::thread([dataPtr, length, level, cb]() {
 		uint32_t outputSize;
 		auto result = extra::lzma::compress_mem((char*)(dataPtr->data()), length, outputSize, level);
 		cb(std::move(result), outputSize);
@@ -247,7 +247,7 @@ void extra::lzma::compress_mem_thread(std::string&& data, const int level, std::
 void extra::lzma::compress_mem_thread(const std::string& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(data);
 	int length = data.size();
-	std::thread([&dataPtr, length, level, cb]() {
+	std::thread([dataPtr, length, level, cb]() {
 		uint32_t outputSize;
 		auto result = extra::lzma::compress_mem((char*)(dataPtr->data()), length, outputSize, level);
 		cb(std::move(result), outputSize);
@@ -256,7 +256,7 @@ void extra::lzma::compress_mem_thread(const std::string& data, const int level, 
 
 void extra::lzma::compress_mem_thread(const char* data, const uint32_t length, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(data, length);
-	std::thread([&dataPtr, length, level, cb]() {
+	std::thread([dataPtr, length, level, cb]() {
 		uint32_t outputSize;
 		auto result = extra::lzma::compress_mem((char*)(dataPtr->data()), length, outputSize, level);
 		cb(std::move(result), outputSize);
