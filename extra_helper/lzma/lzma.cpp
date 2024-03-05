@@ -205,7 +205,7 @@ void extra::lzma::decompress_mem_thread(const std::string& data, std::function<v
 	int length = data.size();
 	std::thread([&dataPtr, length, cb]() {
 		uint32_t outputSize;
-		auto result = extra::lzma::decompress_mem((char *)dataPtr.get(), length, outputSize);
+		auto result = extra::lzma::decompress_mem((char *)dataPtr.get()->data(), length, outputSize);
 		cb(std::move(result), outputSize);
 	}).detach();
 }
