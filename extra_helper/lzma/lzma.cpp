@@ -226,12 +226,20 @@ void extra::lzma::decompress_mem_thread(const uint8_t* data, const uint32_t leng
 	}).detach();
 }
 
+void extra::lzma::decompress_mem_thread(std::shared_ptr<char[]> data, const uint32_t length, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
+	std::thread([&data, length, cb]() {
+		uint32_t outputSize;
+		auto result = extra::lzma::decompress_mem(data.get(), length, outputSize);
+		cb(std::move(result), outputSize);
+	}).detach();
+}
+
 void extra::lzma::compress_mem_thread(std::string&& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(std::move(data));
-	int length = data.size();
+	int length = dataPtr->size();
 	std::thread([&dataPtr, length, level, cb]() {
 		uint32_t outputSize;
-		auto result = extra::lzma::compress_mem((char*)dataPtr.get(), outputSize, level);
+		auto result = extra::lzma::compress_mem((char*)dataPtr.get(), length, outputSize, level);
 		cb(std::move(result), outputSize);
 	}).detach();
 }
@@ -241,7 +249,7 @@ void extra::lzma::compress_mem_thread(const std::string& data, const int level, 
 	int length = data.size();
 	std::thread([&dataPtr, length, level, cb]() {
 		uint32_t outputSize;
-		auto result = extra::lzma::compress_mem((char*)dataPtr.get(), outputSize, level);
+		auto result = extra::lzma::compress_mem((char*)dataPtr.get(), length, outputSize, level);
 		cb(std::move(result), outputSize);
 	}).detach();
 }
@@ -250,7 +258,16 @@ void extra::lzma::compress_mem_thread(const char* data, const uint32_t length, c
 	std::shared_ptr<std::string> dataPtr = std::make_shared<std::string>(data, length);
 	std::thread([&dataPtr, length, level, cb]() {
 		uint32_t outputSize;
-		auto result = extra::lzma::compress_mem((char*)dataPtr.get(), outputSize, level);
+		auto result = extra::lzma::compress_mem((char*)dataPtr.get(), length, outputSize, level);
+		cb(std::move(result), outputSize);
+	}).detach();
+
+}
+
+void extra::lzma::compress_mem_thread(std::shared_ptr<char[]> data, const uint32_t length, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
+	std::thread([&data, length, level, cb]() {
+		uint32_t outputSize;
+		auto result = extra::lzma::compress_mem(data.get(), length, outputSize, level);
 		cb(std::move(result), outputSize);
 	}).detach();
 
