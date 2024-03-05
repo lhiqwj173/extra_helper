@@ -34,5 +34,9 @@ namespace extra {
 		MYLIB_API void compress_mem_thread(const std::string& data, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
 		MYLIB_API void compress_mem_thread(const char* data, const uint32_t length, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
 		MYLIB_API void compress_mem_thread(std::shared_ptr<char[]> data, const uint32_t length, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb);
+	
+		// 
+		MYLIB_API void hexdump(const uint8_t* buf, int size);
+		MYLIB_API void hexdump(const std::string& buf);
 	}
 }

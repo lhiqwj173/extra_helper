@@ -272,3 +272,33 @@ void extra::lzma::compress_mem_thread(std::shared_ptr<char[]> data, const uint32
 	}).detach();
 
 }
+
+void extra::lzma::hexdump(const uint8_t* buf, int size) {
+	int lines = (size + 15) / 16;
+	for (int i = 0; i < lines; i++) {
+		printf("%08x | ", i * 16);
+
+		int lineMin = i * 16;
+		int lineMax = lineMin + 16;
+		int lineCappedMax = (lineMax > size) ? size : lineMax;
+
+		for (int j = lineMin; j < lineCappedMax; j++)
+			printf("%02x ", buf[j]);
+		for (int j = lineCappedMax; j < lineMax; j++)
+			printf("   ");
+
+		printf("| ");
+
+		for (int j = lineMin; j < lineCappedMax; j++) {
+			if (buf[j] >= 32 && buf[j] <= 127)
+				printf("%c", buf[j]);
+			else
+				printf(".");
+		}
+		printf("\n");
+	}
+}
+
+void extra::lzma::hexdump(const std::string& buf) {
+	extra::lzma::hexdump((uint8_t*)buf.data(), buf.size());
+}
