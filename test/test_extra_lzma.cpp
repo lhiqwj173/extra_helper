@@ -4,6 +4,56 @@
 #include "extra_helper/lzma/lzma.h"
 #include <ctime>
 
+void test(std::string filepath) {
+	std::string data;
+
+	// read file_
+	std::fstream file(filepath, std::ios::in | std::ios::binary);
+	if (file.is_open()) {
+		file.seekg(0, std::ios::end);
+		data.resize(file.tellg());
+		file.seekg(0, std::ios::beg);
+		file.read(&data[0], data.size());
+		file.close();
+	}
+
+	// 输出
+	printf("原始数据: %d \n", (int)data.size());
+	extra::lzma::hexdump((uint8_t *)data.data(), 8);
+
+	// compress
+	uint32_t outputSize;
+	auto compressed_data = extra::lzma::compress_mem(data, outputSize, 9);
+
+	// decompress
+	uint32_t outputSize_de;
+	auto decompressed_data = extra::lzma::decompress_mem(compressed_data.get(), outputSize, outputSize_de);
+
+	// 输出
+	printf("压缩后解压数据: % d \n", outputSize_de);
+	extra::lzma::hexdump(decompressed_data.get(), 8);
+
+	// decompress_mem_thread
+	extra::lzma::decompress_mem_thread(compressed_data.get(), outputSize, [&](std::unique_ptr<uint8_t[]> res, uint32_t size) {
+		printf("线程解压数据: % d \n", size);
+		extra::lzma::hexdump(res.get(), 8);
+	});
+
+	// compress_mem_thread
+	extra::lzma::compress_mem_thread(data.data(), data.size(), 9, [&](std::unique_ptr<uint8_t[]> res, uint32_t size) {
+
+		// decompress
+		uint32_t outputSize_de2;
+		auto decompressed_data2 = extra::lzma::decompress_mem(res.get(), size, outputSize_de2);
+
+		// 输出
+		printf("线程压缩后解压数据: % d \n", outputSize_de2);
+		extra::lzma::hexdump(decompressed_data2.get(), 8);
+	});
+
+	getchar();
+}
+
 int main(int argc, char** argv) {
 	auto t = time(0);
 	
@@ -20,23 +70,11 @@ int main(int argc, char** argv) {
 
 	std::cout << "耗时: " << time(0) - t << "s" << std::endl;
 
-	// 读取二进制数据
-	std::fstream file(R"(D:\wsl_ubuntu\rootfs\home\lh\projects\c_market_data\bin\x64\Debug\market\raw)", std::ios::in | std::ios::binary);
-	std::string raw;
-	char buffer[1024] = {0};
-	if (file.is_open()) {
-		while (!file.eof()) {
-			file.read(buffer, 1024);
-			raw.append(buffer, file.gcount());
-		}
+	std::string raw_file;
+	if (argc == 2) {
+		raw_file = argv[1];
+		test(raw_file);
 	}
-
-	auto decompressed_raw = extra::lzma::decompress_mem(raw, outputSize);
-	std::cout << "解压后数据长度: " << outputSize << std::endl;
-
-	extra::lzma::decompress_mem_thread(raw, [](std::unique_ptr<uint8_t[]> res, uint32_t size) {
-		std::cout << "解压后数据长度: " << size << std::endl;
-		});
 
 	getchar();
 }
