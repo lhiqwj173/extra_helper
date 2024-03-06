@@ -265,7 +265,7 @@ void extra::lzma::compress_mem_thread(const char* data, const uint32_t length, c
 }
 
 void extra::lzma::compress_mem_thread(std::shared_ptr<char[]> data, const uint32_t length, const int level, std::function<void(std::unique_ptr<uint8_t[]>, uint32_t)> cb) {
-	std::thread([&data, length, level, cb]() {
+	std::thread([data, length, level, cb]() {
 		uint32_t outputSize;
 		auto result = extra::lzma::compress_mem(data.get(), length, outputSize, level);
 		cb(std::move(result), outputSize);
