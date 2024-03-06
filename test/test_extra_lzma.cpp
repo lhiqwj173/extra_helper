@@ -1,8 +1,9 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <vector>
-#include "extra_helper/lzma/lzma.h"
 #include <ctime>
+#include <cstring>
+#include "extra_helper/lzma/lzma.h"
 
 void test(std::string filepath) {
 	std::string data;
