@@ -8,7 +8,5 @@ int main() {
 		LWARN("LWARN");
 		LERR("LERR");
 		LCRITICAL("LCRITICAL");
-
-		Sleep(1000);
 	}
 }
