@@ -18,6 +18,9 @@ std::shared_ptr<spdlog::logger> extra::log::getLogger(const std::string& log_nam
 		// check folder
 		extra::path::check_create_folder(log_folder);
 
+		// 删除旧的日志文件
+		extra::path::clear_folder(log_folder);
+
 		// check log name
 		std::string _log_name;
 		if (log_name.empty())_log_name = extra::sys::curExeName(false);
@@ -37,7 +40,7 @@ std::shared_ptr<spdlog::logger> extra::log::getLogger(const std::string& log_nam
 		vecSink.push_back(file_sink);
 
 		// 创建 pattern_formatter，定义输出格式
-		auto formatter = std::make_unique<spdlog::pattern_formatter>("[%Y-%m-%d %H:%M:%S.%e][%s][%!][%L] %v");
+		auto formatter = std::make_unique<spdlog::pattern_formatter>("[%Y-%m-%d %H:%M:%S.%e][%s:%!:%#] %v");
 
 		m_pLogger = std::make_shared<spdlog::logger>("multi", begin(vecSink), end(vecSink));
 		m_pLogger->set_level(spdlog::level::trace);

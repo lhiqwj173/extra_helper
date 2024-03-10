@@ -15,9 +15,9 @@
 //////////////////////////////
 // win
 #ifdef _WIN32
-const char * fiel7z = "C:/Windows/7z.exe";
+const char * file7z = "C:/Windows/7z.exe";
 #else
-const char * fiel7z = "/usr/bin/7z";
+const char * file7z = "/usr/bin/7z";
 #endif // DEBUG
 
 // 解压缩文件
@@ -30,7 +30,7 @@ bool _decompress(const std::string& file_path, const int level, bool compress = 
 	std::string temp_folder;
 
 	// 执行命令行
-	std::string cmd = fiel7z;
+	std::string cmd = file7z;
 	std::string r;
 	// 调用命令行执行压缩指令
 	if (compress) {

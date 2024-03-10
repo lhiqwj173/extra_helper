@@ -6,3 +6,9 @@ void extra::path::check_create_folder(const std::string& folder) {
 		std::filesystem::create_directories(folder);
 	}
 }
+
+void extra::path::clear_folder(const std::string& folder) {
+	for (const auto& entry : std::filesystem::directory_iterator(folder)) {
+		std::filesystem::remove(entry.path());
+	}
+}

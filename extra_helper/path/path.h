@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../defi.h"
 
 #include <filesystem>
@@ -9,6 +9,8 @@
 namespace extra {
 	namespace path {
 		MYLIB_API void check_create_folder(const std::string& folder);
+
+		MYLIB_API void clear_folder(const std::string& folder);
 
 		#ifdef _WIN32
 			#ifndef EXPORT
@@ -21,28 +23,28 @@ namespace extra {
 			#endif // !EXPORT
 		#endif // _WIN32
 
-		// »ñÈ¡ÎÄ¼ş¼ĞÏÂµÄËùÓĞÎÄ¼ş
-		// ²»»áÇå¿Õfiles
-		// Ä£°å list / vector
+		// è·å–æ–‡ä»¶å¤¹ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+		// ä¸ä¼šæ¸…ç©ºfiles
+		// æ¨¡æ¿ list / vector
 		template <typename T>
 		MYLIB_OUT_API void get_folder_files(const std::filesystem::path& dir_path, T& files) {
-			// ±éÀúÄ¿Â¼ÖĞµÄËùÓĞÎÄ¼şºÍÎÄ¼ş¼Ğ
+			// éå†ç›®å½•ä¸­çš„æ‰€æœ‰æ–‡ä»¶å’Œæ–‡ä»¶å¤¹
 			for (const auto& entry : std::filesystem::directory_iterator(dir_path)) {
-				// ÅĞ¶ÏÊÇ·ñÊÇÎÄ¼ş
+				// åˆ¤æ–­æ˜¯å¦æ˜¯æ–‡ä»¶
 				if (std::filesystem::is_regular_file(entry)) {
 					files.push_back(entry.path().filename().string());
 				}
 			}
 		}
 
-		// »ñÈ¡ÎÄ¼ş¼ĞÏÂµÄËùÓĞÎÄ¼ş¼ĞÃû
-		// ²»»áÇå¿Õfolders
-		// Ä£°å list / vector
+		// è·å–æ–‡ä»¶å¤¹ä¸‹çš„æ‰€æœ‰æ–‡ä»¶å¤¹å
+		// ä¸ä¼šæ¸…ç©ºfolders
+		// æ¨¡æ¿ list / vector
 		template <typename T>
 		MYLIB_OUT_API void get_folder_folders(const std::filesystem::path& dir_path, T& folders) {
-			// ±éÀúÄ¿Â¼ÖĞµÄËùÓĞÎÄ¼şºÍÎÄ¼ş¼Ğ
+			// éå†ç›®å½•ä¸­çš„æ‰€æœ‰æ–‡ä»¶å’Œæ–‡ä»¶å¤¹
 			for (const auto& entry : std::filesystem::directory_iterator(dir_path)) {
-				// ÅĞ¶ÏÊÇ·ñÊÇÎÄ¼ş
+				// åˆ¤æ–­æ˜¯å¦æ˜¯æ–‡ä»¶
 				if (!std::filesystem::is_regular_file(entry)) {
 					folders.push_back(entry.path().filename().string());
 				}
