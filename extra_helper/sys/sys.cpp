@@ -6,6 +6,7 @@
 #include <windows.h>
 #elif defined(__linux__)
 #include <unistd.h>
+#include <limits.h>
 #endif
 
 #ifdef _WIN32
