@@ -1,7 +1,7 @@
-#include "path.h"
+ï»¿#include "path.h"
 
 void extra::path::check_create_folder(const std::string& folder) {
-	// ¼ì²éÎÄ¼ş¼ĞÊÇ·ñ´æÔÚ
+	// æ£€æŸ¥æ–‡ä»¶å¤¹æ˜¯å¦å­˜åœ¨
 	if (!std::filesystem::exists(folder)) {
 		std::filesystem::create_directories(folder);
 	}

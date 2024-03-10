@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 ADD_DEFINITIONS(-DEXPORT) 
 
+include_directories(logger/include)
+
 # lzma
 add_definitions(-D_7ZIP_ST)
 
@@ -17,7 +19,7 @@ set(LZMA_SOURCES
 )
 
 # 编译动态库 
-add_library(extra_helper SHARED "path/path.cpp" "time/time.cpp"  ${LZMA_SOURCES}  "file/file.cpp" "sys/sys.cpp")
+add_library(extra_helper SHARED "path/path.cpp" "time/time.cpp"  ${LZMA_SOURCES}  "file/file.cpp" "sys/sys.cpp" "logger/log.cpp")
 
 # 定义自定义命令
 add_custom_command(TARGET extra_helper POST_BUILD
@@ -37,7 +39,10 @@ file(INSTALL "time/time.h" DESTINATION include/extra_helper/time)
 file(INSTALL "path/path.h" DESTINATION include/extra_helper/path)
 file(INSTALL "lzma/lzma.h" DESTINATION include/extra_helper/lzma)
 file(INSTALL "file/file.h" DESTINATION include/extra_helper/file)
-file(INSTALL "sys/sys.h" DESTINATION include/extra_helper/file)
+file(INSTALL "sys/sys.h" DESTINATION include/extra_helper/sys)
+file(INSTALL "logger/log.h" DESTINATION include/extra_helper/logger)
+#file(INSTALL "logger/include/spdlog/spdlog.h" DESTINATION include/spdlog)
+file(INSTALL "logger/include/spdlog" DESTINATION include)
 
 if(WIN32)
 # 移动到 C://windows/下
